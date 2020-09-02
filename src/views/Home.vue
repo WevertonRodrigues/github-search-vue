@@ -2,7 +2,7 @@
   <div class="home">
     <v-container class="center pt-0">
       <v-row no-gutters justify="center" >
-        <v-col cols="12">
+        <v-col cols="12" class="text-center">
           <Title />
         </v-col>
         <v-col cols="12" sm="8" lg="6">

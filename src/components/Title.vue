@@ -1,6 +1,6 @@
 <template>
   <div class="title">
-    <h1 class="text-center">
+    <h1>
       <span class="monospace mr-6">Github</span>
       <span class="font-italic font-weight-light">Search</span>
     </h1>
