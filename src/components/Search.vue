@@ -8,14 +8,14 @@
         tile
         hide-details
         :placeholder="placeholder || 'Type a username'"
-        class="rounded-0"
+        class="rounded-0 border mr-n1"
         v-on:keyup.enter="loading || param == null || param == ''  ? false : searchBtn()"
       ></v-text-field>
       <!-- Btn -->
       <v-btn
         large
         tile
-        height="49"
+        height="52"
         color="black"
         :loading="loading"
         :disabled="loading"
@@ -57,6 +57,8 @@ export default {
           params: { username: this.param },
         });
       }
+
+      this.param = "";
     },
     async getDataAndRepos() {
       await axios
@@ -88,3 +90,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.border {
+  border: solid 2px black;
+}
+</style>

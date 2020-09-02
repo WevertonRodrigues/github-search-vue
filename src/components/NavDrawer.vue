@@ -1,11 +1,11 @@
 <template>
-  <v-navigation-drawer v-if="data && repos" permanent>
+  <v-navigation-drawer width="220" v-if="data && repos" permanent floating>
     <!-- Perfil image -->
     <v-img :src="`${data.avatar_url}`" contain></v-img>
     <!-- Userdata  -->
     <div class="mt-1">
-      <div class="title">{{name}}</div>
-      <div class="subheading">{{data.login}}</div>
+      <h1 class="font-weight-regular">{{name}}</h1>
+      <div class="subheading grey--text mt-n1">{{data.login}}</div>
     </div>
     <!-- Perfil userdata -->
     <br />
@@ -13,7 +13,7 @@
       <div v-for="item in listUserDataPerfil" :key="item.icon">
         <section class="mb-1">
           <v-icon color="black" class="mr-1">mdi-{{item.icon}}-outline</v-icon>
-          <span class="text-value">{{item.info || 'N/A'}}</span>
+          <span class="text-value grey--text">{{item.info || 'N/A'}}</span>
           <br />
         </section>
       </div>
