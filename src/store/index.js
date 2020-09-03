@@ -5,15 +5,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    data : [],
-    repos: []
+    user : [],
+    repos: [],
+    loading: false
   },
   mutations: {
-    changeData (state, data) {
-      state.data = data
+    setUser (state, payload) {
+      state.user = payload.user
     },
-    changeRepos (state, repos) {
-      state.repos = repos
+    setRepos (state, payload) {
+      state.repos = payload.repos
+    },
+    setLoading (state, status){
+      state.loading = status
     }
   },
   actions: {

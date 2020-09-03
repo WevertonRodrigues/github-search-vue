@@ -3,13 +3,14 @@
     <div class="d-flex">
       <!-- Textfield -->
       <v-text-field
-        v-model="param"
+        v-model="user"
         solo
         tile
         hide-details
         :placeholder="placeholder || 'Type a username'"
-        class="rounded-0 border mr-n1"
-        v-on:keyup.enter="loading || param == null || param == ''  ? false : searchBtn()"
+        :class="`rounded-0 border ${cssInLoading} `"
+        v-on:keyup.enter.prevent="searchBtn()"
+        :disabled="loading"
       ></v-text-field>
       <!-- Btn -->
       <v-btn
@@ -29,63 +30,87 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "@/services/api.js";
 export default {
   name: "Search",
   props: ["placeholder"],
   data() {
-    return { param: "", loading: null, error: false, data: null };
+    return { user: "", data: null };
   },
   methods: {
     async searchBtn() {
-      this.loading = true;
+      this.$store.commit("setLoading", true);
+
+      this.$store.commit("setRepos", {
+        repos: [],
+      });
 
       await this.getDataAndRepos();
 
-      if (
-        this.param != null &&
-        this.param != "" &&
-        this.$route.name == "Home"
-      ) {
+      if (this.user != null && this.user != "" && this.$route.name == "Home") {
         this.$router.push({
           name: "Result",
-          params: { username: this.param },
+          params: { username: this.user },
         });
       } else {
         this.$router.replace({
           name: "Result",
-          params: { username: this.param },
+          params: { username: this.user },
         });
       }
+      let repoAux = this.repos.sort(function (repoA, repoB) {
+        return repoB.stargazers_count - repoA.stargazers_count;
+      });
+      this.$store.commit("setRepos", {
+        repos: repoAux,
+      });
 
-      this.param = "";
+      this.user = "";
     },
     async getDataAndRepos() {
-      await axios
-        .get(`https://api.github.com/users/${this.param}`)
+
+      await api
+        .fetchUser(this.user)
         .then((response) => {
-          this.$store.commit("changeData", response.data);
-          this.$emit("error-data", false);
+          this.$store.commit("setUser", {
+            user: response,
+          });
         })
         .catch((err) => {
           console.log(err);
-          this.$emit("error-data", true);
-        })
-        .finally(() => {
-          this.loading = false;
+          this.$store.commit("setUser", {
+            user: null,
+          });
         });
 
-      await axios
-        .get(`https://api.github.com/users/${this.param}/repos`)
-        .then((response) => {
-          this.$store.commit("changeRepos", response);
-        })
-        .catch((err) => {
+      var control = true;
+      var page = 1;
+      while (control)
+        await api
+          .fetchRepos(this.user, page++)
+          .then((response) => {
+            console.log(response)
+            if (response.length > 0) {
+              Array.prototype.push.apply(this.repos, response);
+            } else control = false;
+          }).catch((err) => {
           console.log(err);
-        })
-        .finally(() => {
-          this.loading = false;
+          control = false;
         });
+
+      this.$store.commit("setLoading", false);
+    },
+  },
+  computed: {
+    repos() {
+      return this.$store.state.repos;
+    },
+    loading() {
+      return this.$store.state.loading;
+    },
+    cssInLoading() {
+      if (this.loading) return "border-gray";
+      return "border-black mr-n1";
     },
   },
 };
@@ -93,6 +118,12 @@ export default {
 
 <style>
 .border {
-  border: solid 2px black;
+  border: solid 2px;
+}
+.border-black {
+  border-color: black;
+}
+.border-gray {
+  border-color: gray;
 }
 </style>
