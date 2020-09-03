@@ -1,5 +1,5 @@
 <template>
-  <div class="title">
+  <div>
     <h1>
       <span class="roboto-monospace-semi-bold mr-4">Github</span>
       <span class="font-italic font-weight-light">Search</span>

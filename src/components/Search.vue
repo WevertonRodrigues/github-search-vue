@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="px-0">
     <div class="d-flex">
       <!-- Textfield -->
       <v-text-field
@@ -8,7 +8,7 @@
         tile
         hide-details
         :placeholder="placeholder || 'Type a username'"
-        :class="`rounded-0 border ${cssInLoading} `"
+        :class="`rounded-0 border ${cssInLoading}`"
         v-on:keyup.enter.prevent="searchBtn()"
         :disabled="loading"
       ></v-text-field>
@@ -35,7 +35,7 @@ export default {
   name: "Search",
   props: ["placeholder"],
   data() {
-    return { user: "", data: null };
+    return { user: ""};
   },
   methods: {
     async searchBtn() {
@@ -52,18 +52,22 @@ export default {
           name: "Result",
           params: { username: this.user },
         });
-      } else {
+      }
+      if (this.$route.path !== `/users/${this.user}`) {
         this.$router.replace({
           name: "Result",
           params: { username: this.user },
+        }).catch(err => {console.log(err)});
+      }
+
+      if(this.repos){
+        let repoAux = this.repos.sort(function (repoA, repoB) {
+          return repoB.stargazers_count - repoA.stargazers_count;
+        });
+        this.$store.commit("setRepos", {
+          repos: repoAux,
         });
       }
-      let repoAux = this.repos.sort(function (repoA, repoB) {
-        return repoB.stargazers_count - repoA.stargazers_count;
-      });
-      this.$store.commit("setRepos", {
-        repos: repoAux,
-      });
 
       this.user = "";
     },
@@ -89,12 +93,14 @@ export default {
         await api
           .fetchRepos(this.user, page++)
           .then((response) => {
-            console.log(response)
             if (response.length > 0) {
               Array.prototype.push.apply(this.repos, response);
             } else control = false;
           }).catch((err) => {
           console.log(err);
+          this.$store.commit("setRepos", {
+            repos: null,
+          });
           control = false;
         });
 

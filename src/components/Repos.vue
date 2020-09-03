@@ -14,8 +14,8 @@
         </div>
         <br />
       </div>
-      <!-- Repo Pagination -->      
-      <div v-if="pageLength > 10" class="text-center">
+      <!-- Repo Pagination -->
+      <div v-if="pageLength > 1" class="text-center">
         <v-container>
           <v-row justify="center">
             <v-col cols="8">
@@ -44,14 +44,14 @@ export default {
     };
   },
   computed: {
-    sliceRepos(){
-      let from = this.page * 10 - 10
-      let to = this.page * 10
-      return this.repos.slice(from, to)
+    sliceRepos() {
+      let from = this.page * 10 - 10;
+      let to = this.page * 10;
+      return this.repos.slice(from, to);
     },
-    pageLength(){
-      return Math.ceil(this.repos.length / 10) 
-    }
+    pageLength() {
+      return Math.ceil(this.repos.length / 10);
+    },
   },
 };
 </script>

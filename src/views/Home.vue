@@ -18,7 +18,6 @@
 <script>
 import Title from "@/components/Title.vue";
 import Search from "@/components/Search.vue";
-
 export default {
   name: "Home",
   components: {
@@ -30,4 +29,3 @@ export default {
   },
 };
 </script>
-

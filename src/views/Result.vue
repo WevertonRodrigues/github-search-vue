@@ -2,19 +2,17 @@
   <v-container fluid class="py-0">
     <v-container fluid class="py-0">
       <!-- Nav -->
-      <nav>
         <v-row align="center">
-          <v-col>
+          <v-col cols="12" sm="6" md="6" lg="6">
             <Title />
           </v-col>
-          <v-col>
+          <v-col cols="12" sm="6" md="6" lg="6">
             <Search :placeholder="user ? user.login : null"></Search>
           </v-col>
         </v-row>
-      </nav>
     </v-container>
 
-    <v-container>
+    <v-container fluid>
       <!-- v-if container body -->
       <v-container v-if="loading">
         <v-row justify="center" align="center">
@@ -35,7 +33,7 @@
               <NavDrawer :user="user" :repos="repos"></NavDrawer>
             </v-col>
             <!-- Repos -->
-            <v-col cols="12" sm="8" md="9" lg="8" :class="`pt-0 ml-sm-0 ml-md-0 ml-lg-7`">
+            <v-col cols="12" sm="8" md="9" lg="8" :class="`ml-sm-0 ml-md-0 ml-lg-7 mt-9 mt-sm-0 mt-md-0 md-lg-0`">
               <Repos :repos="repos"></Repos>
             </v-col>
           </v-row>

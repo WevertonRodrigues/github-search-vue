@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     initList() {
-      if (this.user != null) {
+      if (this.user) {
         this.count = 0;
         this.listUserDataPerfil[0].info = this.user.company;
         this.listUserDataPerfil[1].info = this.user.location;
